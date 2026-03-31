@@ -3,7 +3,7 @@ import { FlatList, View, Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { List, Divider } from 'react-native-paper';
 
-function Calendario({ excursiones }) { // componente funcional, por lo que no tiene estado y recibe props
+function Calendario({ excursiones, onPress }) { // componente funcional, por lo que no tiene estado y recibe props
     const renderCalendarioItem = ({ item }) => { // función que renderiza cada item de la lista, recibe el item como argumento
         return (
             <View>
@@ -22,6 +22,7 @@ function Calendario({ excursiones }) { // componente funcional, por lo que no ti
                     titleStyle={styles.titulo}
                     descriptionStyle={styles.descripcion}
                     contentStyle={styles.contenido}
+                    onPress={() => onPress(item.id)}
 
                 />
                 <Divider />
