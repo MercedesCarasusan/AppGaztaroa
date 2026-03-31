@@ -1,36 +1,67 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Calendario from './CalendarioComponent';
-import { EXCURSIONES } from '../comun/excursiones';
-
 import DetalleExcursion from './DetalleExcursionComponent';
-import { View } from 'react-native';
+import { EXCURSIONES } from '../comun/excursiones';
+import { Platform, View } from 'react-native';
+import Constants from 'expo-constants';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+const Stack = createNativeStackNavigator();
 
-// Este componente guarda una lista de excursiones en su estado y se la pasa al componente 
-// Calendario para que las muestre. Es el componente padre de Calendario, y el único que conoce los datos de las excursiones. 
-// El componente Calendario es un componente hijo, que recibe los datos de las excursiones a través de sus props
-class Campobase extends Component { // componentes de react native
+class Campobase extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      excursiones: EXCURSIONES,
+    };
+  }
 
-    constructor(props) { // se ejecuta al crear el componente
-        super(props); // obligatorio para usar this en una clase que hereda de component
-        this.state = { // state: datos que pueden cambiar a lo largo de la vida del componente
-            excursiones: EXCURSIONES,
-            seleccionExcursion: null
-        };
-    }
-    onSeleccionExcursion(excursionId) {
-        this.setState({seleccionExcursion: excursionId})
-    }
+  render() {
+    return (
+      <NavigationContainer>
+        <View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight }}>
+          <Stack.Navigator
+            initialRouteName="Calendario"
+            screenOptions={{
+              headerTintColor: '#fff',
+              headerStyle: { backgroundColor: '#015afc' },
+              headerTitleStyle: { color: '#fff' },
+            }}
+          >
+            <Stack.Screen
+              name="Calendario"
+              options={{
+                title: 'Calendario Gaztaroa',
+              }}
+            >
+              {(props) => (
+                <Calendario
+                  {...props}
+                  excursiones={this.state.excursiones}
+                />
+              )}
+            </Stack.Screen>
 
-    render() { // Define lo que se muestra en pantalla, se ejecuta cada vez que el estado del componente cambia
-        return (
-            <View style={{ flex: 1 }}>
-                <DetalleExcursion excursion={this.state.excursiones.filter((excursion) => excursion.id ===this.state.seleccionExcursion)[0]}/>
-                <Calendario excursiones={this.state.excursiones} onPress={( 
-                    excursionId) => this. onSeleccionExcursion(excursionId)} />
-            </View>      
-        );
-    }
+            <Stack.Screen
+              name="DetalleExcursion"
+              options={{
+                title: 'Detalle Excursión',
+                headerBackTitle: 'Calendario',
+              }}
+            >
+              {(props) => (
+                <DetalleExcursion
+                  {...props}
+                  excursiones={this.state.excursiones}
+                />
+              )}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </View>
+      </NavigationContainer>
+    );
+  }
 }
 
-export default Campobase; // permite usar este componente en otros archivos
+export default Campobase;

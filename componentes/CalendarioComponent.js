@@ -1,69 +1,68 @@
-import React from 'react';
+import { Component } from 'react';
 import { FlatList, View, Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { List, Divider } from 'react-native-paper';
 
-function Calendario({ excursiones, onPress }) { // componente funcional, por lo que no tiene estado y recibe props
-    const renderCalendarioItem = ({ item }) => { // función que renderiza cada item de la lista, recibe el item como argumento
-        return (
-            <View>
-                <List.Item
-                    title={item.nombre}
-                    description={item.descripcion}
-                    titleNumberOfLines={0}
-                    descriptionNumberOfLines={6}
-                    left={(props) => (
-                    <Image 
-                        source={require('./imagenes/40Años.png')} 
-                        style={[props.style, styles.imagen]} 
-                        resizeMode="cover"
-                    />
-                    )}
-                    titleStyle={styles.titulo}
-                    descriptionStyle={styles.descripcion}
-                    contentStyle={styles.contenido}
-                    onPress={() => onPress(item.id)}
+class Calendario extends Component {
+  render() {
+    const { navigate } = this.props.navigation;
 
-                />
-                <Divider />
-            </View>
-        );
+    const renderCalendarioItem = ({ item }) => {
+      return (
+        <View>
+          <List.Item
+            title={item.nombre}
+            description={item.descripcion}
+            titleNumberOfLines={0}
+            descriptionNumberOfLines={6}
+            onPress={() => navigate('DetalleExcursion', { excursionId: item.id })}
+            left={(props) => (
+              <Image
+                source={require('./imagenes/40Años.png')}
+                style={[props.style, styles.imagen]}
+                resizeMode="cover"
+              />
+            )}
+            titleStyle={styles.titulo}
+            descriptionStyle={styles.descripcion}
+            contentStyle={styles.contenido}
+          />
+          <Divider />
+        </View>
+      );
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                data={excursiones} // datos que se van a mostrar en la lista, en este caso las excursiones
-                renderItem={renderCalendarioItem} // función que renderiza cada item de la lista
-                keyExtractor={(item) => item.id.toString()}
-            />
-        </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={this.props.excursiones}
+          renderItem={renderCalendarioItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </SafeAreaView>
     );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    imagen: {
-        width: 40,
-        height: 40,
-        alignSelf: 'center',
-    },
-    contenido: {
-        paddingRight: 8,
-    },
-    titulo: {
-        fontSize: 16,
-    },
-    descripcion: {
-        fontSize: 14,
-        lineHeight: 20,
-    },
+  container: {
+    flex: 1,
+  },
+  imagen: {
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+  },
+  contenido: {
+    paddingRight: 8,
+  },
+  titulo: {
+    fontSize: 16,
+  },
+  descripcion: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
 });
 
-export default Calendario; // permite usar este componente en otros archivos
-
-
-
-
+export default Calendario;
