@@ -13,6 +13,9 @@ import Home from './HomeComponent';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
+import Contacto from './ContactoComponent';
+import QuienesSomos from './QuienesSomosComponent';
+
 class Campobase extends Component {
   constructor(props) {
     super(props);
@@ -84,6 +87,48 @@ class Campobase extends Component {
     );
   };
 
+  ContactoNavegador = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="Contacto"
+        screenOptions={{
+          headerTintColor: '#fff',
+          headerStyle: { backgroundColor: '#015afc' },
+          headerTitleStyle: { color: '#fff' },
+        }}
+      >
+        <Stack.Screen
+          name="Contacto"
+          component={Contacto}
+          options={{
+            title: 'Contacto',
+          }}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  QuienesSomosNavegador = () => {
+    return (
+      <Stack.Navigator
+        initialRouteName="Quienes Somos"
+        screenOptions={{
+          headerTintColor: '#fff',
+          headerStyle: { backgroundColor: '#015afc' },
+          headerTitleStyle: { color: '#fff' },
+        }}
+      >
+        <Stack.Screen
+          name="Quienes Somos"
+          component={QuienesSomos}
+          options={{
+            title: 'Quiénes somos',
+          }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   DrawerNavegador = () => {
     return (
       <Drawer.Navigator
@@ -102,6 +147,14 @@ class Campobase extends Component {
         <Drawer.Screen
           name="Calendario"
           component={this.CalendarioNavegador}
+        />
+        <Drawer.Screen
+          name="Contacto"
+          component={this.ContactoNavegador}
+        />
+        <Drawer.Screen
+          name="Quienes Somos"
+          component={this.QuienesSomosNavegador}
         />
       </Drawer.Navigator>
     );
