@@ -5,6 +5,7 @@ import { ACTIVIDADES } from '../comun/actividades';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
+import { baseUrl, colorGaztaroaClaro } from '../comun/comun';
 
 
 // COMPONENTE FUNCIONAL (CARD SUPERIOR)
@@ -54,7 +55,7 @@ class QuienesSomos extends Component {
                         descriptionNumberOfLines={6}
                         left={(props) => (
                             <Image
-                                source={require('./imagenes/40Años.png')}
+                                source={{ uri: baseUrl + item.imagen }}
                                 style={[props.style, styles.imagen]}
                             />
                         )}
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
-        backgroundColor: '#eee',
+        backgroundColor: colorGaztaroaClaro,
     },
     card: {
         margin: 8,
