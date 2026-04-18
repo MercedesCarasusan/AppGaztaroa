@@ -1,12 +1,17 @@
 import { Component } from 'react';
 import { View, StyleSheet, FlatList, Image } from 'react-native';
 import { Card, Text, List, Divider } from 'react-native-paper';
-import { ACTIVIDADES } from '../comun/actividades';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
 import { baseUrl, colorGaztaroaClaro } from '../comun/comun';
+import { connect } from 'react-redux';
 
+const mapStateToProps = (state) => { // cada componente no tiene porque tener acceso a todo el estado
+    return {
+        actividades: state.actividades
+    }
+}
 
 // COMPONENTE FUNCIONAL (CARD SUPERIOR)
 function Historia() {
@@ -36,13 +41,6 @@ function Historia() {
 
 // COMPONENTE DE CLASE (CARD INFERIOR)
 class QuienesSomos extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            actividades: ACTIVIDADES
-        };
-    }
 
     render() {
         const renderActividadItem = ({ item }) => {
@@ -84,7 +82,7 @@ class QuienesSomos extends Component {
                         <Divider />
 
                         <FlatList
-                            data={this.state.actividades}
+                            data={this.props.actividades.actividades}
                             renderItem={renderActividadItem}
                             keyExtractor={(item) => item.id.toString()}
                             scrollEnabled={false}
@@ -133,4 +131,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default QuienesSomos;
+export default connect(mapStateToProps)(QuienesSomos); 
