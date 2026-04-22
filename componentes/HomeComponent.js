@@ -4,40 +4,61 @@ import { Card, Text } from 'react-native-paper';
 import { ImageBackground } from 'react-native';
 import { baseUrl } from '../comun/comun';
 import { connect } from 'react-redux';
+import { IndicadorActividad } from './IndicadorActividadComponent';
 
 const mapStateToProps = (state) => { // cada componente no tiene porque tener acceso a todo el estado
-    return {
-        actividades: state.actividades,
-        excursiones: state.excursiones,
-        cabeceras: state.cabeceras
-    }
+  return {
+    actividades: state.actividades,
+    excursiones: state.excursiones,
+    cabeceras: state.cabeceras
+  }
 }
 
-function RenderItem({ item }) {
-  if (!item) {
-    return <View />;
+function RenderItem(props) {
+
+  const item = props.item;
+
+  if (props.isLoading) {
+    return (
+      <IndicadorActividad />
+    );
   }
 
-  return (
-    <Card style={styles.card}>
+  else if (props.errMess) {
+    return (
+      <View>
+        <Text> {props.errMess} </Text>
+      </View>
+    );
+  }
 
-      <ImageBackground
-        source={{ uri: baseUrl + item.imagen }}
-        style={styles.image}
-      >
-        <Text style={styles.tituloImagen}>
-          {item.nombre}
-        </Text>
-      </ImageBackground>
+  else {
+    if (item != null) {
+      return (
+        <Card style={styles.card}>
 
-      <Card.Content>
-        <Text style={styles.descripcion}>
-          {item.descripcion}
-        </Text>
-      </Card.Content>
+          <ImageBackground
+            source={{ uri: baseUrl + item.imagen }}
+            style={styles.image}
+          >
+            <Text style={styles.tituloImagen}>
+              {item.nombre}
+            </Text>
+          </ImageBackground>
 
-    </Card>
-  );
+          <Card.Content>
+            <Text style={styles.descripcion}>
+              {item.descripcion}
+            </Text>
+          </Card.Content>
+
+        </Card>
+      );
+    }
+    else {
+      return(<View></View>);
+    }
+  }
 }
 
 class Home extends Component {
@@ -45,9 +66,18 @@ class Home extends Component {
   render() {
     return (
       <ScrollView>
-        <RenderItem item={this.props.cabeceras.cabeceras.filter((item) => item.destacado)[0]} />
-        <RenderItem item={this.props.excursiones.excursiones.filter((item) => item.destacado)[0]} />
-        <RenderItem item={this.props.actividades.actividades.filter((item) => item.destacado)[0]} />
+        <RenderItem item={this.props.cabeceras.cabeceras.filter((item) => item.destacado)[0]}
+          isLoading={this.props.cabeceras.isLoading}
+          errMess={this.props.cabeceras.errMess}
+        />
+        <RenderItem item={this.props.excursiones.excursiones.filter((item) => item.destacado)[0]}
+          isLoading={this.props.excursiones.isLoading}
+          errMess={this.props.excursiones.errMess}
+        />
+        <RenderItem item={this.props.actividades.actividades.filter((item) => item.destacado)[0]}
+          isLoading={this.props.actividades.isLoading}
+          errMess={this.props.actividades.errMess}
+        />
       </ScrollView>
     );
   }

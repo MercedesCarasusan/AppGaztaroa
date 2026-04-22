@@ -6,6 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
 import { baseUrl, colorGaztaroaClaro } from '../comun/comun';
 import { connect } from 'react-redux';
+import { IndicadorActividad } from './IndicadorActividadComponent';
+
 
 const mapStateToProps = (state) => { // cada componente no tiene porque tener acceso a todo el estado
     return {
@@ -81,12 +83,19 @@ class QuienesSomos extends Component {
 
                         <Divider />
 
-                        <FlatList
-                            data={this.props.actividades.actividades}
-                            renderItem={renderActividadItem}
-                            keyExtractor={(item) => item.id.toString()}
-                            scrollEnabled={false}
-                        />
+                        {
+                            this.props.actividades.isLoading ? (
+                                <IndicadorActividad/>
+                            ) : this.props.actividades.errMess ? (
+                                <Text>{this.props.actividades.errMess}</Text>
+                            ) : (
+                                this.props.actividades.actividades.map((item) => (
+                                    <View key={item.id}>
+                                        {renderActividadItem({ item })}
+                                    </View>
+                                ))
+                            )
+                        }
                     </Card>
                 </ScrollView>
             </SafeAreaView>
