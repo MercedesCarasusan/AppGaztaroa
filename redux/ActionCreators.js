@@ -1,6 +1,30 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../comun/comun';
 
+// simula el envio al servidor
+export const postComentario = (excursionId, valoracion, autor, comentario) => (dispatch) => {
+
+  setTimeout(() => {
+
+    const newComentario = {
+      excursionId: excursionId,
+      valoracion: valoracion,
+      autor: autor,
+      comentario: comentario,
+      dia: new Date().toISOString()
+    };
+
+    dispatch(addComentario(newComentario));
+
+  }, 2000);
+};
+
+// acción normal
+export const addComentario = (comentario) => ({
+  type: ActionTypes.ADD_COMENTARIO,
+  payload: comentario
+});
+
 export const postFavorito = (excursionId) => (dispatch) => {
   setTimeout(() => {
     dispatch(addFavorito(excursionId));
